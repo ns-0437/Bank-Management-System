@@ -1,3 +1,4 @@
+const express = require('express');
 const mysql = require('mysql');
 
 // create a connection to the database
@@ -9,20 +10,25 @@ const connection = mysql.createConnection({
   port: 3306
 });
 
-// connect to the database
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to MySQL database!');
+// create an Express app
+const app = express();
+
+// handle GET requests to /query
+app.get('/query', (req, res) => {
+  // get the query parameter from the URL
+  const query = req.query.q;
+
+  // execute the query
+  connection.query(query, (err, results, fields) => {
+    if (err) {
+      res.status(500).send(err.message);
+    } else {
+      res.send(results);
+    }
+  });
 });
 
-// perform a sample query
-connection.query('SELECT * FROM project.account_holder', (err, results, fields) => {
-  if (err) throw err;
-  console.log(results);
-});
-
-// close the connection
-connection.end((err) => {
-  if (err) throw err;
-  console.log('Connection to MySQL database closed.');
+// start the server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
 });
