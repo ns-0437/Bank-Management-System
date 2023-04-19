@@ -4,8 +4,8 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
-  database: 'bank',
+  password: 'Sunita@09',
+  database: 'project',
   port: 3306
 });
 
@@ -16,7 +16,7 @@ connection.connect((err) => {
 });
 
 // perform a sample query
-connection.query('SELECT * FROM bank.bank', (err, results, fields) => {
+connection.query('SELECT * FROM project.account_holder', (err, results, fields) => {
   if (err) throw err;
   console.log(results);
 });
